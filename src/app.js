@@ -1,4 +1,4 @@
-import {html} from '@beforesemicolon/markup';
+const {html} = BFS.MARKUP;
 
 const root = document.getElementById('app');
 

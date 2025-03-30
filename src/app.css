@@ -1,70 +1,129 @@
 @import "normalizer.css";
 
-:root {
-	font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-	line-height: 1.5;
-	font-weight: 400;
-	
-	color-scheme: light dark;
-	color: rgba(255, 255, 255, 0.87);
-	background-color: #242424;
-	
-	font-synthesis: none;
-	text-rendering: optimizeLegibility;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
-
-a {
-	font-weight: 500;
-	color: #646cff;
-	text-decoration: inherit;
-}
-
-a:hover {
-	color: #535bf2;
+html,
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
 }
 
 body {
-	margin: 0;
+	font-size: 16px;
+	font-family: sans-serif;
+	background: #f2f2f2;
+	letter-spacing: 0.06rem;
 	display: flex;
-	place-items: center;
-	min-width: 320px;
-	min-height: 100vh;
+	flex-direction: column;
 }
 
-button {
-	border-radius: 8px;
-	border: 1px solid transparent;
-	padding: 0.6em 1.2em;
-	font-size: 1em;
-	font-weight: 500;
-	font-family: inherit;
-	background-color: #1a1a1a;
+/* header ------------------------------- */
+
+header {
+	background: #00213f;
+	color: #fff;
+	padding: 5px 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+header h1 {
+	font-size: 1rem;
+	margin: 0;
+}
+
+header .actions {
+	display: flex;
+	gap: 15px;
+	font-size: 0.8rem;
+}
+
+header .actions button,
+header .actions select {
+	text-transform: capitalize;
+	font-size: 0.8rem;
 	cursor: pointer;
-	transition: border-color 0.25s;
+	padding: 5px 10px;
+	border-radius: 2px;
+	color: #fff;
+	border: none;
+	letter-spacing: 0.06rem;
 }
 
-button:hover {
-	border-color: #646cff;
+header .save-btn {
+	background: #3a7600;
 }
 
-button:focus,
-button:focus-visible {
-	outline: 4px auto -webkit-focus-ring-color;
+header .save-btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
 }
 
-@media (prefers-color-scheme: light) {
-	:root {
-		color: #213547;
-		background-color: #fff;
-	}
-	
-	a:hover {
-		color: #747bff;
-	}
-	
-	button {
-		background-color: #f9f9f9;
-	}
+header .publish-btn {
+	background: #496cff;
 }
+
+header .publish-btn.published {
+	background: #33ae5b;
+}
+
+header .templates-selector {
+	background: #00041c;
+}
+
+/* main ------------------------------- */
+
+main {
+	flex: 1;
+	display: flex;
+}
+
+/* controls ------------------------------- */
+
+#controls {
+	width: 300px;
+	background: #fff;
+	border-right: 1px solid #ddd;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+#controls h2 {
+	margin-top: 0;
+	text-transform: capitalize;
+}
+
+#controls label {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	margin-bottom: 10px;
+}
+
+#controls label .field-text {
+	text-transform: capitalize;
+	color: #6702c2
+}
+
+#controls label input,
+#controls label textarea {
+	padding: 10px 10px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+}
+
+/* canvas ------------------------------- */
+
+#canvas {
+	flex: 1;
+}
+
+#canvas iframe {
+	all: unset;
+	width: 100%;
+	height: 100%;
+}
+

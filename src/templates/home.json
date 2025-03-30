@@ -1,0 +1,13 @@
+{
+  "id": "home",
+  "extends": "base",
+  "name": "Home",
+  "pathname": "/",
+  "content": [
+    {
+      "name": "widget",
+      "id": "sample",
+      "children": []
+    }
+  ]
+}

@@ -2,8 +2,9 @@ import canvasStyle from './canvas.css' with {type: 'css'};
 import {parseTemplate} from "./utils/parse-template.js";
 import {controls} from "./utils/controls.js";
 import {mergeObjects} from "./utils/merge-objects.js";
+import {auth0Client} from './auth.js';
 
-const {html, state, effect, when, is, oneOf, repeat, or} = BFS.MARKUP;
+const {html, state, effect, when, is, oneOf, repeat, or, pick} = BFS.MARKUP;
 
 const searchParams = new URLSearchParams(location.search);
 const pagesCache = new Map();
@@ -11,6 +12,7 @@ const widgetsCache = new Map();
 const renderNodes = new Map();
 
 const [page, setPage] = state(searchParams.get('page') || 'home');
+const [user, setUser] = state(null);
 const [templateStatus, setTemplateStatus] = state('idle');
 const [pendingChanges, updatePendingChanges] = state(0);
 const [template, setTemplate] = state(null);
@@ -30,9 +32,12 @@ effect(() => {
 	} else {
 		setTemplateStatus('loading');
 		
-		fetch(`./src/templates/${page()}.json`)
-			.then(res => res.json())
-			.then(async res => {
+		Promise.all([
+			auth0Client.getUser(),
+			fetch(`./src/templates/${page()}.json`).then(res => res.json())
+		])
+			.then(async ([user, res]) => {
+				setUser(user);
 				if (res.extends) {
 					const base = pagesCache.get(page()) || await fetch(`./src/templates/${res.extends}.json`)
 						.then(res => res.json());
@@ -211,9 +216,20 @@ const renderControl = def => {
 const canvasIFrame = html`<iframe srcdoc="${templateContent}" onload="${iFrameLoadHandler}" />`;
 const loading = html`<p>loading...</p>`;
 
-html`
+function traverseContent(content, cb) {
+	for (let node of content) {
+		if(cb(node)) {
+			return;
+		}
+		
+		traverseContent(node.children, cb)
+	}
+}
+
+export default html`
+	<link rel="stylesheet" href="./src/app.css">
 	<header>
-		<h1>CMS</h1>
+		<h1>CMS (${pick(user, 'nickname')})</h1>
 		<div class="actions">
 			<button type="button"
 			        class="save-btn"
@@ -240,15 +256,4 @@ html`
 			${when(is(templateStatus, 'ready'), canvasIFrame)}
 		</div>
 	</main>
-`
-	.render(document.body);
-
-function traverseContent(content, cb) {
-	for (let node of content) {
-		if(cb(node)) {
-			return;
-		}
-		
-		traverseContent(node.children, cb)
-	}
-}
+`;

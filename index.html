@@ -5,10 +5,34 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CMS Editor</title>
-	  <script src="https://unpkg.com/@beforesemicolon/markup/dist/client.js"></script>
-	  <link rel="stylesheet" href="./src/app.css">
+	  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+	  <script src="https://unpkg.com/@beforesemicolon/web-component/dist/client.js"></script>
+	  <script src="https://unpkg.com/@beforesemicolon/router/dist/client.js"></script>
+	  <link rel="stylesheet" href="./src/normalizer.css">
+	  <style>
+		  html,
+		  body,
+		  page-route {
+			  margin: 0;
+			  padding: 0;
+			  width: 100%;
+			  height: 100%;
+		  }
+		  
+		  page-route:not(:empty) {
+			  font-size: 16px;
+			  font-family: sans-serif;
+			  background: #f2f2f2;
+			  letter-spacing: 0.06rem;
+			  display: flex;
+			  flex-direction: column;
+		  }
+	  </style>
   </head>
   <body>
-	  <script type="module" src="/src/app.js"></script>
+	  <page-route path="/" src="./src/check.js"></page-route>
+	  <page-route path="/editor" src="./src/app.js"></page-route>
+	  
+	  <page-redirect path="/"></page-redirect>
   </body>
 </html>

@@ -1,4 +1,3 @@
-import canvasStyle from './canvas.css' with {type: 'css'};
 import {parseTemplate} from "./utils/parse-template.js";
 import {controls} from "./utils/controls.js";
 import {mergeObjects} from "./utils/merge-objects.js";
@@ -152,11 +151,35 @@ const iFrameLoadHandler = (event) => {
 	let currentWidgetEl = null;
 	let currentHighlightWidgetEl = null;
 	
-	[...canvasStyle.cssRules].forEach(r => {
-		canvasStyleEl.textContent += r.cssText;
-	})
+	const style = doc.createElement('style');
+	style.innerHTML = `
+	html, body {
+		width: 100%;
+		height: 100%;
+		padding: 0;
+		margin: 0;
+	}
+
+	*, *::before, *::after {
+		box-sizing: border-box;
+	}
+
+	widget {
+		border: 1px solid transparent;
+		cursor: pointer;
+		display: block;
+	}
+
+	widget[highlight] {
+		border-color: #15b8c7;
+	}
 	
-	doc.head.appendChild(canvasStyleEl)
+	widget[active] {
+		border-color: #920deb;
+	}
+	`.replace(/\s{2,}/g, ' ').replace(/[\t\n]+/g, '')
+	
+	doc.head.appendChild(style)
 	
 	doc.addEventListener('click', (event) => {
 		event.stopPropagation();
